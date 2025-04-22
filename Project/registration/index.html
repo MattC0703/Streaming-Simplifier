@@ -1,0 +1,57 @@
+<!-- Code by Harrison Kane and Matthew Culley -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style/style.css">
+<title>Form Page</title>
+</head>
+<body>
+  <div class='container'>
+      <div class='box form-box'>
+      
+        <a href=".." id="go-back"> <img src="../images/goBack.png" width="100%"> </a>
+      
+        <h2>Register</h2>
+
+        <form id="myForm" method = 'post'>
+
+          <div class='field-input'>
+          <label for="username">Username:</label><br>
+          <input type="text" id="username" name="username" autocomplete='off' required><br>
+          </div>
+
+          <div class='field-input'>
+          <label for="password">Password:</label><br>
+          <input type="text" id="password" name="password " autocomplete='off' required><br><br>
+          </div>
+
+          <div class='field'>
+          <input type="submit" value="Register" id="register-button">
+          </div>
+
+          <div class='links'>
+          Already a member? <a href='../login/login.html'>Sign In</a>
+          </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+    
+      // Get the input values
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      console.log(username + ' ' + password);
+    
+      // Redirect to output.html with input values as URL parameters
+      //window.location.href = "output.html?username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password);
+    });
+  </script>
+
+</body>
+</html>

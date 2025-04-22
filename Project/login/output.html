@@ -1,0 +1,47 @@
+<!-- Code by Harrison Kane (unfinished) -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Output Page</title>
+<script src="Project/registration/JSONbins_functions.js"></script>
+</head>
+<body>
+<script>
+
+// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username');
+const password = urlParams.get('password');
+
+// Display input values
+//document.write("<p>Username: " + username + "</p>");
+//document.write("<p>Password: " + password + "</p>");
+
+// Create user object
+const user = {
+  "username": username,
+  "password": password,
+  "watch_later_ids": [""]
+};
+
+// Call the function to add the user
+addUser(user)
+  .then(data => {
+    console.log('Data from JSONbin:', data);
+    // Do something with the data
+    window.location.href = "/home/kaneha38/public_html/cap-stone/project/index.php";
+    document.write(data);
+    console.log("GOOD");
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    console.log("BAD");
+  });
+
+</script>
+
+</body>
+</html>

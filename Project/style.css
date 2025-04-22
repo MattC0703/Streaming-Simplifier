@@ -1,0 +1,240 @@
+/* Code by Matthew Culley */
+
+#main-container{
+    border-top:  4vh solid rgb(255, 54, 54);
+    border-bottom: 10px solid rgb(255, 54, 54);
+    height:fit-content;
+    padding-top:3vw;
+}
+
+#top-container{
+    display:flex;
+    justify-content: center;
+    padding-top: 10vh;
+}
+#site-label{
+    position:absolute;
+    color:rgba(255, 112, 129, 0.775);
+    top:.5vh;
+    left:.5vw;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+#account-logo{
+    position: absolute;
+    width:3.5vh;
+    height:3.5vh;
+    top:.2%;
+    right: 1%;
+
+}
+
+#empty-search{
+    display: none;
+}
+#search-bar{
+    width: 60vw;
+    margin-top: 10vh;
+    border-radius: 17px;
+    padding-left:2vw;
+    height: 4vh;
+}
+#search-button{
+    height: 4.5vh;
+    margin-top: 10vh;
+    border-radius: 15px;
+    cursor:pointer;
+    position:relative;
+    top:9%;     
+}
+
+#mid-container{
+    display:flex;
+    justify-content:center;
+    max-width:100%;
+}
+
+#surprise-button{
+    width: 15vw;
+    margin-top: 4vh;
+    height: 5vh;
+    border-radius: 0;
+    background-color:white;
+    cursor: pointer;
+    box-shadow: 0px 8px 15px lightgray;
+    border: 0;
+}
+#surprise-button:hover{
+    background-color:whitesmoke;
+}
+#surprise-button:active{
+    background-color: rgba(255, 112, 129, 0.775);
+}
+
+
+#drop-button{
+    position:absolute;
+    left: 90vw;
+    width: 6vw;
+    top: 45vh;
+    background-color: white;
+    box-shadow: 0px 8px 15px lightgray;
+    border-color:transparent;
+    cursor:pointer;
+    text-wrap:nowrap;
+}
+#drop-button:active{
+    background-color:rgba(255, 112, 129, 0.775);
+}
+#myDropdown{
+    position:absolute;
+    left: 90vw;
+    width: 6vw;
+    top: 48.5vh;
+    height:fit-content;
+
+    display:none;
+    flex-direction:column;
+    justify-content: space-evenly;
+    align-items:center;
+    text-align:center;
+    
+
+    /* border: 0px solid black; */
+    box-shadow: 0px 8px 15px lightgray;
+    background-color:white;
+}
+#drop-button:hover{
+    background-color:whitesmoke;
+}
+#drop-button:active{
+    background-color:rgba(255, 112, 129, 0.775);
+}
+#myDropdown button{
+    text-decoration: none;
+    /* box-shadow: 0px 1px 2px lightgray; */
+    color:red;
+    width:90%;
+    height:fit-content;
+    padding: 2px;
+    background-color:white;
+    border: 0;
+    
+}
+#myDropdown button:hover{
+    background-color:rgb(234, 234, 234);
+    border-radius:2px;
+    
+}
+
+#reset-button{
+    position:absolute;
+    right: 90vw;
+    top: 45vh;
+
+    /* border: 0px solid black; */
+    box-shadow: 0px 8px 15px lightgray;
+    background-color:white;
+    border: 0;
+    height: 2vw;
+    width: fit-content;
+    display:none;
+}
+#reset-button:hover{
+    background-color:rgb(234, 234, 234);
+}
+#reset-button:active{
+    background-color:rgba(255, 112, 129, 0.775);
+}
+
+#next-page{
+    position:fixed;
+    left: 90vw;
+    top: 90vh;
+
+    /* border: 0px solid black; */
+    box-shadow: 0px 8px 15px lightgray;
+    background-color:white;
+    border: 0;
+    height: 2vw;
+    width: 5.5vw;
+}
+#next-page:hover{
+    background-color: whitesmoke;
+}
+#next-page:active{
+    background-color:rgba(255, 112, 129, 0.775);
+}
+#last-page{
+    display:none;
+
+    position:fixed;
+    right: 90vw;
+    top: 90vh;
+
+    /* border: 0px solid black; */
+    box-shadow: 0px 8px 15px lightgray;
+    background-color:white;
+    border: 0;
+    height: 2vw;
+    width: 5.5vw;
+}
+#last-page:hover{
+    background-color: whitesmoke;
+}
+#last-page:active{
+    background-color:rgba(255, 112, 129, 0.775);
+}
+
+/* .custom-select select option{
+    text-align:center;
+    border-radius: 0px !important;
+    margin-top:5px;
+} */
+
+
+
+
+#logo-box{
+    display:flex;
+    position:absolute;
+    justify-content:center;
+    text-align:center;
+    border: 0px solid rgb(255, 54, 54);
+    /* margin: 0 auto; */
+    /* background-color:aliceblue; */
+    width: 17vw;
+    height: 11vw;
+    z-index: -1;
+    left:50%;
+    top:8%;
+    margin-left: -9.2vw;
+}
+
+#lower-container{
+    margin-top: 12vh;
+    border-top:10px solid rgb(255, 54, 54);
+}
+#movie-holder{
+    display:flex;
+    justify-content:center;
+    border-spacing: 2vw;
+    margin-top: -10px;
+}
+#movie-holder tr td{
+    border: 0px solid black;
+    width:22vh;
+    height: fit-content;
+    border-radius: 3px;
+    padding:0;
+    box-shadow:0px 10px 12px lightgray;
+}
+
+
+
+
+*{
+    margin: 0;
+    max-width: 100%;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}

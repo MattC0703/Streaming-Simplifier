@@ -1,0 +1,73 @@
+<!-- Code by Harrison Kane WIP -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="login-style.css">
+<title>Login Page</title>
+<script src="Project/registration/JSONbins_functions.js"></script>
+
+</head>
+<body>
+  <div class='container'>
+    <div class='box form-box'>
+      <a href=".." id="go-back"> <img src="../images/goBack.png" width="100%"> </a>
+<h2>Login</h2>
+<form id="loginForm">
+
+  <div class='field-input'>
+  <label for="username">Username:</label><br>
+  <input type="text" id="username" name="username" autocomplete='off' required><br>
+  </div>
+
+  <div class='field-input'>
+  <label for="password">Password:</label><br>
+  <input type="password" id="password" name="password" autocomplete='off' required><br><br>
+  </div>
+
+  <div class='field'>
+  <input type="submit" value="Login" id="login-button">
+  </div>
+
+  <div class='links'>
+  Don't have an account? <a href='../registration/index.html'> Sign Up Now</a>
+  </div>
+</form>
+
+</div>
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault(); // Prevent default form submission
+  
+    try {
+      // Get the input values
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+  
+      // Fetch user data from jsonbin.io
+      const userData = getJsonArrayFromJsonBin();
+  
+      // Check if there's a user with the entered username and password
+      const user = userData.find(user => user.username === username && user.password === password);
+      localStorage.setItem('username', username);
+      if (user) {
+        // Redirect to output.html with success message
+        window.location.href = "output.html?success=true";
+        console.log('Good');
+      } else {
+        // Redirect to output.html with error message
+        window.location.href = "output.html?success=false";
+        console.log('Bad');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      
+    }
+  });
+  </script>
+
+</body>
+</html>

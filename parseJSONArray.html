@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+  <title>Display JSON Array</title>
+  <style>
+	/* Style for the div containing JSON objects with light blue background */
+	.json-object {
+	  background-color: lightblue;
+	  padding: 10px;
+	  margin-bottom: 10px;
+	  font-family: 'poppins';
+	  font-style: medium;
+	  font-size: 14 px;
+	}
+
+	/* Style for the div containing the number of JSON objects with orange background */
+	.json-count {
+	  background-color: orange;
+	  padding: 10px;
+	  margin-bottom: 10px;
+	  font-family: 'poppins';
+	  font-style: medium;
+	  font-size: 14 px;
+	}
+
+	/* Style for the div containing emails with light green background */
+	.emails {
+	  background-color: lightgreen;
+	  padding: 10px;
+	  margin-bottom: 10px;
+	  font-family: 'poppins';
+	  font-style: medium;
+	  font-size: 14 px;
+	}
+  </style>
+</head>
+<body>
+<!-- Include the getExplJSONData.js script -->
+<script src="getJSONData.js"></script>
+
+<script>
+  async function fetchDataAndDisplay() {
+	try {
+	  //set jsonDataString var from data return from getJSONData()
+	  const jsonDataString = await getJSONData();
+
+	  // Parse the JSON string into an array to manipulate the JSON
+	  const jsonData = JSON.parse(jsonDataString);
+
+	  // Display the entire JSON array with a header
+	  
+	  /*
+	  //can use forEach or see for() function below
+	  document.body.innerHTML += '<div class="json-object"><h2>JSON Array</h2></div>';
+	  jsonData.forEach(function(obj, index) {
+		document.body.innerHTML += '<div class="json-object"><h3>Object ' + index + '</h3><pre>' + JSON.stringify(obj, 2) + '</pre></div>';
+	  });
+	  */
+	  
+	  //use functions to better organize and code JSON and html 
+	  //getObjects(jsonData);
+	  //can use for index=0 to get JSON objects
+	  //<pre> maintains formatting
+	  for (var index = 0; index < jsonData.length; index++) {
+		  //get each JSON object -> obj
+		  var obj = jsonData[index];
+		  document.body.innerHTML += '<div class="json-object"><h3>Object ' + index + '</h3><pre>' + JSON.stringify(obj, 2) + '</pre></div>';
+	  }
+	  
+	  //create literal template
+	  var numObjs = "";
+	  // Display the total number of JSON objects using length
+	  numObjs += '<div class="json-count"><h2>Number of JSON Objects</h2>' + jsonData.length + '</div>';
+
+  		/*
+		// again, can use forEach or for -> index = 0 below
+		jsonData.forEach(function(jsonData, index) {
+		  document.body.innerHTML += '<div class="emails"><p>Emails from Object ' + index + ': ' + jsonData.Email + '</p></div>';
+		});
+		*/
+	  //create literal template
+	  	//change Email to your JSON object field i.e. First_Name
+	  	var EmailList = '';
+		for (var index = 0; index < jsonData.length; index++) {
+		  var currentObject = jsonData[index];
+		  EmailList += '<div class="emails"><p>Email from Object ' + index + ': ' + currentObject.Email + '</p></div>';
+		}
+		
+		// Update the innerHTML once after the loop
+		document.body.innerHTML += '<div>' +numObjs+ EmailList + '</div>';
+
+	} catch (error) {
+	  console.error('Error fetching or displaying data:', error);
+	}
+  }
+
+  // Example of calling the function
+  fetchDataAndDisplay();
+  
+  function getObjects(jsonData) {
+	//can use for index=0 to get JSON objects
+	//<pre> maintains formatting
+	for (var index = 0; index < jsonData.length; index++) {
+		//get each JSON object -> obj
+		var obj = jsonData[index];
+		document.body.innerHTML += '<div class="json-object"><h3>Object ' + index + '</h3><pre>' + JSON.stringify(obj, 2) + '</pre></div>';
+	}
+}
+  
+</script>
+
+</body>
+</html>
+

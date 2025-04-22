@@ -1,0 +1,30 @@
+<!-- Code by Harrison Kane (unfinished) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Output</title>
+<script src="Project/registration/JSONbins_functions.js"></script>
+</head>
+<body>
+
+<script>
+// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const success = urlParams.get('success');
+
+// Display message based on login success
+if (success === "true") {
+  document.write("<p>Login successful!</p>");
+  window.location.href = "http://elvis.rowan.edu/~culley65/Capstone/Project/"; 
+} else if (success === "false") {
+  document.write("<p>Login failed. Please check your username and password and try again.</p>");
+  window.location.href = "index.html"; 
+} else {
+  document.write("<p>Unexpected error occurred.</p>");
+}
+</script>
+
+</body>
+</html>
