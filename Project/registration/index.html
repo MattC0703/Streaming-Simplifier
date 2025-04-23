@@ -1,4 +1,4 @@
-<!-- Code by Harrison Kane and Matthew Culley -->
+<!-- Matthew Culley -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,16 +15,21 @@
       
         <h2>Register</h2>
 
-        <form id="myForm" method = 'post'>
+        <form id="myForm" action="http://localhost:3000/register" method='post'>
 
           <div class='field-input'>
-          <label for="username">Username:</label><br>
-          <input type="text" id="username" name="username" autocomplete='off' required><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" autocomplete="off" required><br>
           </div>
 
           <div class='field-input'>
-          <label for="password">Password:</label><br>
-          <input type="text" id="password" name="password " autocomplete='off' required><br><br>
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" autocomplete='off' required><br>
+          </div>
+
+          <div class='field-input'>
+            <label for="password">Password:</label><br>
+            <input type="text" id="password" name="password" autocomplete='off' required><br><br>
           </div>
 
           <div class='field'>
@@ -32,25 +37,45 @@
           </div>
 
           <div class='links'>
-          Already a member? <a href='../login/login.html'>Sign In</a>
+            Already a member? 
+            <a id="sign-in-text" href='../login/login.html'>Sign In</a>
           </div>
       </form>
     </div>
   </div>
 
   <script>
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent default form submission
-    
-      // Get the input values
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      console.log(username + ' ' + password);
-    
-      // Redirect to output.html with input values as URL parameters
-      //window.location.href = "output.html?username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password);
+    const form = document.getElementById('myForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();  // Prevent form from submitting normally
+  
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+  
+      try {
+        const response = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          body: data,
+        });
+        console.log(data);
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          // Show success modal
+          // document.getElementById('successModal').style.display = 'block';
+          alert(result.message);
+          redirectToHomePage();
+        } 
+      } catch (e) {
+        console.error('Error:', e);
+        alert(`Error! ${e}`);
+      }
     });
+  
+    function redirectToHomePage() {
+      window.location.href = 'http://localhost/streaming_simplifier/project';  // Redirect to homepage after success
+    }
   </script>
 
 </body>

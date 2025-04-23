@@ -26,6 +26,7 @@ body {
     padding: 25px 25px;
     border-radius: 20px;
     box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.5);
+
 }
 
 .form-box header {
@@ -64,7 +65,7 @@ body {
 #go-back{
     position:absolute;
     width:3.5vh;
-    left:55.5%;
+    margin-left:265px;
 }
 
 .form-box form .field .btn {

@@ -13,32 +13,33 @@
   <div class='container'>
     <div class='box form-box'>
       <a href=".." id="go-back"> <img src="../images/goBack.png" width="100%"> </a>
-<h2>Login</h2>
-<form id="loginForm">
+  <h2>Login</h2>
 
-  <div class='field-input'>
-  <label for="username">Username:</label><br>
-  <input type="text" id="username" name="username" autocomplete='off' required><br>
-  </div>
+  <form id="loginForm" action="http://localhost:3000/login" method="post">
 
-  <div class='field-input'>
-  <label for="password">Password:</label><br>
-  <input type="password" id="password" name="password" autocomplete='off' required><br><br>
-  </div>
+    <div class='field-input'>
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username" autocomplete='off' required><br>
+    </div>
 
-  <div class='field'>
-  <input type="submit" value="Login" id="login-button">
-  </div>
+    <div class='field-input'>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" autocomplete='off' required><br><br>
+    </div>
 
-  <div class='links'>
-  Don't have an account? <a href='../registration/index.html'> Sign Up Now</a>
-  </div>
-</form>
+    <div class='field'>
+     <input type="submit" value="Login" id="login-button">
+    </div>
+
+    <div class='links'>
+      Don't have an account? <a href='../registration/index.html'> Sign Up Now</a>
+    </div>
+  </form>
 
 </div>
 </div>
 
-<script>
+<!-- <script>
   document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault(); // Prevent default form submission
   
@@ -67,7 +68,7 @@
       
     }
   });
-  </script>
+  </script> -->
 
 </body>
 </html>
