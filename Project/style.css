@@ -14,7 +14,7 @@
 }
 #site-label{
     position:absolute;
-    color:rgba(255, 112, 129, 0.775);
+    color:rgba(255, 157, 168, 0.775);
     top:.5vh;
     left:.5vw;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
@@ -25,8 +25,56 @@
     width:3.5vh;
     height:3.5vh;
     top:.2%;
-    right: 1%;
+    right: 1.5%;
+    /* display:none; */
+}
+#logout{
+    position:absolute;
+    top:7px;
+    right: 4%; 
 
+    border: 2px solid rgb(196, 29, 29);
+    /* box-shadow: 0px 1px 10px 5px rgb(209, 168, 168); */
+    padding: 1px 5px 1px 5px;
+    cursor:pointer;
+    transition:all .12s;
+    border-radius: 4px;
+    user-select:none;
+    height:15px;
+    font-size: 13px;
+    display:none;
+}
+#logout:hover{
+    background-color:rgba(255, 200, 206, 0.775);
+    /* padding: 3px 8px 3px 8px;
+    top:4px;
+    right:.85%; */
+}
+#logout:active{
+    background-color: rgba(148, 0, 17, 0.775);;
+    color:rgb(241, 241, 241);
+}
+#account-info{
+    position: absolute;
+    width:26px;
+    height:26px;
+    top:.2%;
+    right: 1.5%;
+
+    border: 2px solid black;
+    border-radius:100%;
+    cursor:pointer;
+    user-select: none;
+
+    /* display:flex; */
+    align-items:center;
+    justify-content: center;
+    overflow:hidden;
+    display:none;
+}
+#account-info img{
+    max-width: 51px;
+    max-height: 51px;
 }
 
 #empty-search{

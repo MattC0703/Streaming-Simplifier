@@ -66,7 +66,9 @@
           // document.getElementById('successModal').style.display = 'block';
           alert(result.message);
           redirectToHomePage();
-        } 
+        } else {
+          alert(result.message);
+        }
       } catch (e) {
         console.error('Error:', e);
         alert(`Error! ${e}`);

@@ -15,8 +15,9 @@
     <div id="main-container">    
         <div id="logo-box"><img src="images/3Slogo.png" alt="3 S Logo" style="width:35%"> </div>
             <div id="top-container">
-
-                <a href="login/login.html" id="account-logo"> <img src="images/login-here.png"> <a>
+                <a id="logout">Log Out!</a>
+                <a href="login/login.html" id="account-logo"> <img src="images/login-here.png"> </a>
+                <a id="account-info"> <img id="profile-picture" src="images/3Slogo.png"> </a>
                 <input type="text" placeholder="Search..." id="search-bar">
                 <input type="text" placeholder="Search..." id="empty-search">
                 <img src="images/searchIcon.png" alt="search-icon" id="search-button"><br/>
@@ -103,8 +104,9 @@
                 for($row = 0; $row <= 3; $row++)
                 {
                     echo "<tr>";
-                        for($column = 0; $column < 5; $column++)
-                        {
+                        for($column = 0; $column < 5; $column++) //generates a table with 4 rows and 5 columns
+                        { 
+                            // assigns a unique ID to each table cell and contained image for dynamic use later
                             echo '<td id=cell'.$cellNum.'><a href="movieDetails.php"> <img src="" id="img'.$imgNum.'" alt="" height"100%"></a></td>';
                             $cellNum++;
                             $imgNum++;

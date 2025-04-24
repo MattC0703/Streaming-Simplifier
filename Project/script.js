@@ -1,9 +1,8 @@
-// Code by Matthew Culley and Rodjovit Ramos
+// Code by Matthew Culley
 
+//assigning page objects to usable variables
 const searchButton = document.getElementById('search-button');
 searchButton.addEventListener('click', search);
-
-
 
 const userInput = document.getElementById('search-bar');
 const emptySearch = document.getElementById('empty-search');
@@ -18,17 +17,20 @@ const nextPage = document.getElementById('next-page');
 const lastPage = document.getElementById('last-page');
 const surpriseButton = document.getElementById('surprise-button');
 const resetButton = document.getElementById('reset-button');
+const login = document.getElementById('account-logo');
+const logout = document.getElementById('logout');
+const pfp = document.getElementById('account-info');
 
 const movieTable = document.querySelectorAll('#movie-holder td a img');
 console.log(movieTable);
 
 let isShowing = false;
-let url = localStorage.getItem('url');
-    if(localStorage.getItem('url') == undefined){
+let url = localStorage.getItem('url'); //grab the url to use for the current TMBD filtering mode
+    if(localStorage.getItem('url') == undefined){ //if it's undefined for the current user, set it to the popular tab
         url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
     }
 
-let urlLabel = localStorage.getItem('urlLabel');
+let urlLabel = localStorage.getItem('urlLabel'); //if the URL doesn't have a given label, set it to the default
     if(localStorage.getItem('urlLabel') == undefined){
         urlLabel = 'Sort By';
     }
@@ -39,8 +41,26 @@ console.log(localStorage.getItem('url'));
 
 //searchButton.addEventListener('click', search);
 
+if(localStorage.getItem('token')){ //checks if there currently exists a login token
+    console.log(localStorage.getItem('token')); 
+    login.style.display = 'none'; //hides the options for logging in
+    logout.style.display = 'block'; //displays the options for someone who's already logged in
+    pfp.style.display = 'flex'; 
+}
+
+logout.addEventListener('click', () => {
+    localStorage.removeItem('token'); // removes the webtoken used being used to retain logged in status
+    alert('You have been logged out.');
+    location.reload(); //reload the page
+});
+
+let profileOptions = false;
+pfp.addEventListener('click', () => {
+    //add logic for pop up menu 
+});
+
 async function search(){
-    let imagesArray = [];
+    let imagesArray = []; //declares new arrays for containing the table cells and images
     let idArray = [];
     console.log(userInput.value);
     if(userInput.value != emptySearch.value)
@@ -156,22 +176,22 @@ dropButton.onclick = () => {
     console.log(isShowing);
 }
 
-    popularButton.onclick = () => {
+    popularButton.onclick = () => { //change the url for populating movies to the popular filter
         localStorage.setItem('url', 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1');
         window.location.reload();
         localStorage.setItem('urlLabel', 'Popular');
     }
-    currentButton.onclick = () => {
+    currentButton.onclick = () => { //change the url for populating movies to the currently player filter
         localStorage.setItem('url', 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1');
         window.location.reload();
         localStorage.setItem('urlLabel', 'Current');
     }
-    upcomingButton.onclick = () => {
+    upcomingButton.onclick = () => { //change the url for populating movies to the upcoming filter
         localStorage.setItem('url', 'https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1');
         window.location.reload();
         localStorage.setItem('urlLabel', 'Upcoming');
     }
-    topRatedButton.onclick = () => {
+    topRatedButton.onclick = () => { //change the url for populating movies to the top rated filter
         localStorage.setItem('url', 'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1');
         window.location.reload();
         localStorage.setItem('urlLabel', 'Top Rated');
@@ -285,7 +305,7 @@ dropButton.onclick = () => {
 
 
 async function getPopMovieImages(){
-    let idArray = [];
+    let idArray = []; //declares new arrays for containing the table cells and images
     let imagesArray = [];    
     const options = {
     method: 'GET',
@@ -296,15 +316,15 @@ async function getPopMovieImages(){
     };
 
     try {
-        const response = await fetch(url, options);
+        const response = await fetch(url, options); //calls the data from the API using current user filter (or default)
         const data = await response.json();
-        for (let movie of data.results){
-            if(movie.poster_path != null){
-                imagesArray = await imagesArray.concat(movie.poster_path);
-                idArray = await idArray.concat(movie.id);
+        for (let movie of data.results){ //loops through each object in the data
+            if(movie.poster_path != null){ //checks to see if a given movie has a poster path (assigned by the TMDB database)
+                imagesArray = await imagesArray.concat(movie.poster_path);  //if it has a poster path, add it as a new item in the imagesArray
+                idArray = await idArray.concat(movie.id); //do the same with all movie IDs
 
             } else {
-                imagesArray = await imagesArray.concat(movie.original_title);
+                imagesArray = await imagesArray.concat(movie.original_title); //if it doesn't have a poster path, add the title to use as an alt for the missing photo.
                 idArray = await idArray.concat(movie.id);
             }
         }
@@ -315,11 +335,11 @@ async function getPopMovieImages(){
 
     let num = 1;
     let indexNum = 0;
-    for(num = 1; num <= 20; num++){
-        let currentImg = $("#img"+num);
-        currentImg.attr('src','https://image.tmdb.org/t/p/w780/'+imagesArray[indexNum]);
-        currentImg.attr('alt',imagesArray[indexNum]);
-        currentImg.attr('name',idArray[indexNum]);
+    for(num = 1; num <= 20; num++){ //loop 20 times (the size of the table)
+        let currentImg = $("#img"+num); //look at the given image at the current id
+        currentImg.attr('src','https://image.tmdb.org/t/p/w780/'+imagesArray[indexNum]); //change the image source to the TMBD poster path
+        currentImg.attr('alt',imagesArray[indexNum]); //change the ult to the current item in the images database (would be the title when required)
+        currentImg.attr('name',idArray[indexNum]); //assign the name of the cell to the movie ID to for calling details page later
 
         let currentCell = $("#cell"+num);
         indexNum++;

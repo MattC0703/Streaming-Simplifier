@@ -39,36 +39,43 @@
 </div>
 </div>
 
-<!-- <script>
-  document.getElementById("loginForm").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Prevent default form submission
-  
+<script>
+  const form = document.getElementById('loginForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();  // Prevent form from submitting normally
+
+    const formData = new FormData(form);
+    const data = new URLSearchParams(formData);
+
     try {
-      // Get the input values
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-  
-      // Fetch user data from jsonbin.io
-      const userData = getJsonArrayFromJsonBin();
-  
-      // Check if there's a user with the entered username and password
-      const user = userData.find(user => user.username === username && user.password === password);
-      localStorage.setItem('username', username);
-      if (user) {
-        // Redirect to output.html with success message
-        window.location.href = "output.html?success=true";
-        console.log('Good');
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        body: data,
+      });
+      console.log(data);
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Show success modal
+        // document.getElementById('successModal').style.display = 'block';
+        console.log(result.token);
+        localStorage.setItem('token', result.token);
+        alert(result.message);
+        redirectToHomePage();
       } else {
-        // Redirect to output.html with error message
-        window.location.href = "output.html?success=false";
-        console.log('Bad');
+        alert(result.message);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      
+    } catch (e) {
+      console.error('Error:', e);
+      alert(`Error! ${e}`);
     }
   });
-  </script> -->
+
+  function redirectToHomePage() {
+    window.location.href = 'http://localhost/streaming_simplifier/project';  // Redirect to homepage after success
+  }
+</script>
 
 </body>
 </html>

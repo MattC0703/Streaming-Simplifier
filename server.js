@@ -1,3 +1,5 @@
+//Code by Matthew Culley
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
@@ -46,17 +48,17 @@ app.post('/register', async (req, res) => {
         console.log(req.body.password);
         const existingUser = await users.findOne({$or: [{username}, {email}]}); //checks to ensure that the user doesn't already exist
         if(existingUser){
-            return res.status(400).send('Username or Email is already in use');
+            return res.json({success:false, message:'That Username or Email is already in use!'});
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10); //encrypts the password ten times
+        const hashedPassword = await bcryptz.hash(password, 10); //encrypts the password ten times
         await users.insertOne({username, email, password:hashedPassword}); //inserts the new user data with the encrypted password
 
         // res.send('Thanks for Joining us!');
         res.json({success:true, message:'Thanks for Joining!'}) //creates a response that it was successful, attaching the thanks message
 
     } catch(e){
-        console.error('failed to register, sorry!', err);
+        console.error('failed to register, sorry!', e);
         res.json({ success: false, message: 'Registration failed... Please try again!' });
     }
 });
@@ -67,16 +69,17 @@ app.post('/login', async (req, res) => {
     const user = await users.findOne({username}); // see if the username is valid
 
     if(!user){
-        return res.status(401).send('User not found!');
+        return res.json({success:false, message: 'Sorry, that username doesn\'t appear to exist!'});
     }
 
     const isMatch = await bcrypt.compare(password, user.password); //check the password against the encrypted password on record
     if(!isMatch){
-        return res.status(401).send('Incorrect Password!');
+        return res.json({success:false, message: 'Sorry, you don\'t have the right password!'});
     }
 
     const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '2h'}); //assign the user a login token so they can stay logged in for 2 hours
-    res.send(`Nice! You're logged in! Your Token is: ${token}`);
+    res.json({success:true, message:`Nice! You\'re in!`, token});
+
 })
 
 //testing functions below
