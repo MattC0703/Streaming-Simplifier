@@ -8,37 +8,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Streaming Simplifier</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" type="image" href="images/3Slogo">
+    <link rel="icon" type="image" href="images/3Slogo.png">
 </head>
 <body>
     <h3 id="site-label">Streaming Simplifier</h3>
     <div id="main-container">    
         <div id="logo-box"><img src="images/3Slogo.png" alt="3 S Logo" style="width:35%"> </div>
             <div id="top-container">
+
                 <a id="logout">Log Out!</a>
+                
                 <a href="login/login.html" id="account-logo"> <img src="images/login-here.png"> </a>
-                <a id="account-info"> <img id="profile-picture" src="images/3Slogo.png"> </a>
+                
+                <a id="account-info"> 
+                    <!-- <% if(profilePictureURL) { %> -->
+                    <img id="profile-picture" src="images/login-here.png"> 
+                </a>
+                <form id="pfp-form" action="http://localhost:3000/upload-profile-picture" method="post" enctype="multipart/form-data">
+                    <label for="profilePicture" id="upload-lable"><img src="images/cameraicon.png"></label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*"  required />
+                    <button type="submit">Confirm</button>
+                </form> 
+                
                 <input type="text" placeholder="Search..." id="search-bar">
                 <input type="text" placeholder="Search..." id="empty-search">
+                
                 <img src="images/searchIcon.png" alt="search-icon" id="search-button"><br/>
 
-                
-            
             </div>
             <div id="mid-container">
                 
                 <button id="surprise-button">Surprise Me!</button>
-
-                <!-- <div class="custom-select">
-                    <select>
-
-                        <option>Popular</option>
-                        <option>Alphabet</option>
-                        <option>New</option>
-
-                    </select>
-                    
-                </div>  -->
 
                 <button id="reset-button">Clear Search</button>
 
@@ -63,33 +63,26 @@
         </div>
 
  
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <script>
+        // import jwt_decode from 'https://esm.sh/jwt-decode';
+        if(localStorage.getItem('token')){
+            const token = localStorage.getItem('token');
+            const decoded = jwt_decode(token);
+            const expirationTime = decoded.exp * 1000 - 60000;
+            const currentTime = Date.now();
 
-    <!-- <script>
-        function myFunction() {
-
-            var dropdown = document.getElementById("myDropdown");
-            
-            
-
-
-            console.log(isShowing);
-
-           // Create a new link element
-
-            // var newLink = document.createElement("a");
-
-            // newLink.href = "#";
-
-            // newLink.textContent = "New Link"; // Set the text of the new link
-
-            
-
-            // // Append the new link to the dropdown
-
-            // dropdown.appendChild(newLink);
-
+            if (currentTime >= decoded.exp * 1000) {
+                // Token expired already
+                logoutUser();
+            }
         }
-    </script> -->
+        function logoutUser(){
+            localStorage.removeItem('token'); // removes the webtoken used being used to retain logged in status
+            alert('Your Token expired!');
+            location.reload(); //reload the page
+        }
+    </script>
 
 
             

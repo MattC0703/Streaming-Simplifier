@@ -1,12 +1,16 @@
 //Code by Matthew Culley
 
+require('dotenv').config();
+const { s3, upload, getSignedURL } = require('./aws-config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const {MongoClient, ServerApiVersion} = require('mongodb');
-require('dotenv').config();
+const { Upload } = require('@aws-sdk/lib-storage');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const { GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const uri = process.env.MONGO_URI;
 const app = express();
@@ -51,7 +55,7 @@ app.post('/register', async (req, res) => {
             return res.json({success:false, message:'That Username or Email is already in use!'});
         }
 
-        const hashedPassword = await bcryptz.hash(password, 10); //encrypts the password ten times
+        const hashedPassword = await bcrypt.hash(password, 10); //encrypts the password ten times
         await users.insertOne({username, email, password:hashedPassword}); //inserts the new user data with the encrypted password
 
         // res.send('Thanks for Joining us!');
@@ -80,7 +84,143 @@ app.post('/login', async (req, res) => {
     const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '2h'}); //assign the user a login token so they can stay logged in for 2 hours
     res.json({success:true, message:`Nice! You\'re in!`, token});
 
-})
+});
+
+function isAuthenticated(req, res, next) {
+  // Get token from authorization header
+  console.log(req.headers);
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(' ')[1]
+  console.log(token);
+  
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);   
+    
+    // Verify user exists in database
+    users.findOne({ username: decoded.username })
+      .then(user => {
+        console.log("mongo user "+user);
+        if (user) {
+          req.user = user;
+          next();
+        } else {
+          console.log('no mongo user'+user);
+          res.status(401).json({ message: 'Invalid token. User not found.' });
+        }
+      })
+      .catch(err => {
+        console.error('Authentication error:', err);
+        res.status(500).json({ message: 'Server error' });
+      });
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid token.' });
+  }
+}
+
+// Profile picture upload route
+app.post('/upload-profile-picture', isAuthenticated, upload.single('profilePicture'), async (req, res) => {
+  try {
+    const username = req.user.username;
+    const key = req.file.key;
+
+    if (!req.file) {
+      throw new Error('File not uploaded');
+    }
+
+    const profilePictureUrl = req.file.location; // uploaded by multer-s3
+
+    console.log('Uploaded profile picture:', profilePictureUrl);
+
+    await users.updateOne(
+      { username: username },
+      { $set: { profilePicture: key } }
+    );
+
+    res.json({
+      success: true,
+      imageUrl: profilePictureUrl,
+      s3Key: key
+    });
+
+    // Remove res.redirect('/profile') - can't send two responses
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).send('Error uploading profile picture');
+  }
+});
+
+app.get('/profile-picture-url', isAuthenticated, async (req, res) => {
+  try {
+    const user = await users.findOne({ username: req.user.username }); //grab the user attached to the multer upload
+
+    if (!user || !user.profilePicture) {
+      return res.status(404).json({ error: 'Profile picture not found.' }); 
+    }
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: user.profilePicture,
+    });
+
+    const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); //retrieve a url valid for 1 hour
+
+    res.json({ signedUrl });
+  } catch (error) {
+    console.error('Error generating signed URL:', error);
+    res.status(500).send('Error generating signed URL');
+  }
+});
+
+  app.get('/profile', isAuthenticated, async(req, res) => {
+    try {
+      const username = req.user.username; // From JWT token
+      
+      // Find user in MongoDB
+      const user = await users.findOne({username: username});
+
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      // Return user data including profile picture URL
+      res.json({
+        username: user.username,
+        profilePicture: user.profilePicture || null,
+        // Add any other user fields you want to send
+      });
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching user profile', error });
+    }
+  });
+
+
+  // Route to get user profile with signed URL for the image
+  // app.get('/profile', isAuthenticated, async (req, res) => {
+  //   try {
+  //     const user = await users.findOne({ username: new ObjectId(req.user.username) });
+  
+  //     let profilePictureUrl = null;
+  //     if (user?.profilePicture) {
+  //       profilePicture = await getSignedImageUrl(user.profilePictureKey);
+  //     }
+  
+  //     res.render('profile', {
+  //       user,
+  //       profilePictureUrl
+  //     });
+  //   } catch (error) {
+  //     console.error('Error retrieving profile:', error);
+  //     res.status(500).send('Error retrieving profile');
+  //   }
+  // });
 
 //testing functions below
 async function run() {

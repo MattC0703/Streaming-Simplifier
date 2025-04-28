@@ -1,6 +1,9 @@
 // Code by Matthew Culley
 
 //assigning page objects to usable variables
+
+
+
 const searchButton = document.getElementById('search-button');
 searchButton.addEventListener('click', search);
 
@@ -20,6 +23,7 @@ const resetButton = document.getElementById('reset-button');
 const login = document.getElementById('account-logo');
 const logout = document.getElementById('logout');
 const pfp = document.getElementById('account-info');
+const pfpForm = document.getElementById('pfp-form');
 
 const movieTable = document.querySelectorAll('#movie-holder td a img');
 console.log(movieTable);
@@ -54,10 +58,66 @@ logout.addEventListener('click', () => {
     location.reload(); //reload the page
 });
 
-let profileOptions = false;
+let profileOptionsShowing = false;
 pfp.addEventListener('click', () => {
     //add logic for pop up menu 
+
+    if(!profileOptionsShowing){
+        profileOptionsShowing = true;
+        pfpForm.style.display = 'flex';
+    } else if (profileOptionsShowing){
+        profileOptionsShowing = false;
+        pfpForm.style.display = 'none';
+    }
+    console.log(profileOptionsShowing);
 });
+
+pfpForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); //prevent the default event
+
+  const form = e.target; //set the event object to a variable
+  const formData = new FormData(form); //pass the data from the event object into another variable
+  const token = localStorage.getItem('token');  // grab our token
+
+  try {
+    const response = await fetch('http://localhost:3000/upload-profile-picture', { //the location of the post request to the backend
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}` //custom header for the request to pass the token into the backend for verification
+        // Do NOT set Content-Type when using FormData — fetch handles it
+      },
+      body: formData //sends the contents of the form to the backend
+    });
+
+    const result = await response.text(); //waits for the backend to respond, stores it as text
+    alert("Success!"); // alerts the user of the response
+    window.location.reload();
+    // might reload page or do some kind of custom UI update here
+  } catch (error) {
+    console.error('Upload failed:', error);
+    alert('Upload failed');
+  }
+});
+
+async function loadProfilePicture() {
+    const token = localStorage.getItem('token');  // grab our token
+  try {
+    const response = await fetch('http://localhost:3000/profile-picture-url', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    const data = await response.json();
+
+    if (data.signedUrl) {
+      document.getElementById('profile-picture').src = data.signedUrl;
+    }
+  } catch (error) {
+    console.error('Error loading profile picture:', error);
+  }
+}
+window.onload = loadProfilePicture;
+
 
 async function search(){
     let imagesArray = []; //declares new arrays for containing the table cells and images
@@ -348,5 +408,6 @@ async function getPopMovieImages(){
 
 }
 getPopMovieImages();
+
 
 
