@@ -85,6 +85,7 @@
     color: transparent;
     display:block;
     font-size: 3vw;
+    user-select:none;
 }
 #provider-table tr td{
     width: 5.6vw;

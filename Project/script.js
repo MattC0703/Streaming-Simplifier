@@ -118,6 +118,22 @@ async function loadProfilePicture() {
 }
 window.onload = loadProfilePicture;
 
+document.getElementById('menu-icon').addEventListener('click', ()=>{
+    document.getElementById('slide-menu').classList.toggle('open');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function search(){
     let imagesArray = []; //declares new arrays for containing the table cells and images

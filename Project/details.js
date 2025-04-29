@@ -173,7 +173,7 @@ async function getMovieByID(movie_id){
             $(box).attr("id", "provider-"+n);
         }
     }
-    function createLinks(box, link){
+    function createLinks(box, link){ //create a holder for the links that can be inserted into a box
         box.html("<a href="+link+" target=\"_blank\">.</a>")
     }
     function createRentTable(columnNum){

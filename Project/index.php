@@ -16,6 +16,16 @@
         <div id="logo-box"><img src="images/3Slogo.png" alt="3 S Logo" style="width:35%"> </div>
             <div id="top-container">
 
+                <a id="menu-icon"><img src="images/burgericon.png"></a>
+                <div id="slide-menu">
+                    <nav>
+                        <ul>
+                            <li><a id="watchlist-button"><span>Watchlist</span></a></li>
+                            <li><a><span>TBD...</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+
                 <a id="logout">Log Out!</a>
                 
                 <a href="login/login.html" id="account-logo"> <img src="images/login-here.png"> </a>

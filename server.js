@@ -44,6 +44,20 @@ async function start(){
 }
 start();
 
+  //account creation related functions
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
+
 app.post('/register', async (req, res) => {
     try{
         console.log('button clicked');
@@ -86,7 +100,7 @@ app.post('/login', async (req, res) => {
 
 });
 
-function isAuthenticated(req, res, next) {
+function isAuthenticated(req, res, next) { //token authenticator, necessary for basically all user related functions
   // Get token from authorization header
   console.log(req.headers);
   const authHeader = req.headers.authorization;
@@ -123,6 +137,19 @@ function isAuthenticated(req, res, next) {
     res.status(400).json({ message: 'Invalid token.' });
   }
 }
+
+  //profile picture related functions
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
 // Profile picture upload route
 app.post('/upload-profile-picture', isAuthenticated, upload.single('profilePicture'), async (req, res) => {
@@ -201,26 +228,86 @@ app.get('/profile-picture-url', isAuthenticated, async (req, res) => {
     }
   });
 
+  //watchlist related functions
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
-  // Route to get user profile with signed URL for the image
-  // app.get('/profile', isAuthenticated, async (req, res) => {
-  //   try {
-  //     const user = await users.findOne({ username: new ObjectId(req.user.username) });
+  app.post('/add-to-watchlist', isAuthenticated, async(req, res) =>{
+    try{
+      const movieId = req.body.movieId; //grab the movieID through the post from the front end
+      const username = req.user.username; //grab the authenticated username from the authenticated method
+
+      const result = await users.updateOne(
+        {username: username}, //look at username
+        {$addToSet: {watchlist: movieId}} //add the movie to that user's watchlist set
+      );
+
+      if(result.modifiedCount > 0){ //if something was modified, inform the user of a success
+        res.json({success: true, message: 'Added to your Watchlist!'});
+      } else { //if nothing was modified, inform the user that it failed, but there was no error
+        res.json({success: false, message: 'Addition failed! Is the movie already in your watchlist?'});
+      }
+    } catch (e){
+      console.error('Error adding movie to watchlist: '+e);
+      res.status(500).send('There was an internal error adding the movie to your watchlist...');
+    }
+  });
+  app.post('/remove-from-watchlist', isAuthenticated, async(req, res) =>{
+    try {
+      const movieId = req.body.movieId;
+      const username = req.user.username;
+      
+      
+      const result = await users.updateOne(
+        { username: username },
+        { $pull: { watchlist: movieId } }  // remove the movie from the user's collection
+      );
   
-  //     let profilePictureUrl = null;
-  //     if (user?.profilePicture) {
-  //       profilePicture = await getSignedImageUrl(user.profilePictureKey);
-  //     }
+      if (result.modifiedCount > 0) { //if something was modified, inform the user of a success
+        res.json({ success: true, message: 'Movie removed from watchlist' });
+      } else { //if nothing was modified, inform the user that it failed, but there was no error
+        res.json({ success: false, message: 'Movie not found in watchlist' });
+      }
+    } catch (e) {
+      console.error('Error removing from watchlist:', e);
+      res.status(500).send('There was an internal error removing the movie from your watchlist...');
+    }
+  });
+  app.get('/get-watchlist', isAuthenticated, async (req, res) => {
+    try {
+      const username = req.user.username;
+      
+      // Retrieve user data from the database
+      const user = await users.findOne({ username: username });
   
-  //     res.render('profile', {
-  //       user,
-  //       profilePictureUrl
-  //     });
-  //   } catch (error) {
-  //     console.error('Error retrieving profile:', error);
-  //     res.status(500).send('Error retrieving profile');
-  //   }
-  // });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Fetch movie details from TMDB
+      const movieDetails = await Promise.all(user.watchlist.map(async (movieId) => {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_API_KEY}`);
+        const data = await response.json();
+        console.log(data);
+        return data;
+      }));
+      
+      console.log({watchlist: movieDetails});
+      res.json({ watchlist: movieDetails });
+    } catch (error) {
+      console.error('Error fetching watchlist:', error);
+      res.status(500).send('Error fetching watchlist');
+    }
+  });
 
 //testing functions below
 async function run() {
