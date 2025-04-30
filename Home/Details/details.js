@@ -191,7 +191,62 @@ async function getMovieByID(movie_id){
             
         }
     }
+
+    async function initializeWatchlist() {
+        await loadWatchlist();  // Wait for the watchlist to be fully loaded
+        document.getElementById('toggle-watchlist-button').addEventListener('click', () => {
+            const movieId = localStorage.getItem('currentMovie');
+            toggleWatchlist(movieId);
+        });
+    }
+    initializeWatchlist();
+
+    let userWatchlist = []; //array to eventually hold watchlist item IDs
+    //pass a movie Id into this function
+    async function toggleWatchlist(movieId) { 
+        const token = localStorage.getItem('token');
+        console.log("movieId:", movieId);  
+        const url = isInWatchlist(movieId) ? 'http://localhost:3000/remove-from-watchlist' : 'http://localhost:3000/add-to-watchlist'; //check if it's in the watchlist and run the post method accordingly
+
+        const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ movieId: movieId })
+        });
     
+        const data = await response.json();
+        if (data.success) {
+        alert(data.message);  // Show a success message
+        loadWatchlist();  // Re-fetch or update the watchlist UI
+        } else {
+        alert(data.message);  // Handle the error
+        }
+    }
+    async function loadWatchlist() {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/get-watchlist', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        userWatchlist = data.watchlist.map(movie => movie.id); // Just store the IDs
+        console.log(userWatchlist);
+    }
+    loadWatchlist();
+    //helper function to check the contents of the watchlist
+    function isInWatchlist(movieId) {
+        console.log(movieId, typeof movieId);
+        console.log(userWatchlist, typeof userWatchlist[0]);
+        console.log(userWatchlist.includes(Number(movieId)));
+        return userWatchlist.includes(Number(movieId));
+    }
+
+
+
     console.log('hi');
     console.log(localStorage.getItem('currentMovie'));
     

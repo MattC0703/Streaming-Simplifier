@@ -46,7 +46,7 @@ console.log(localStorage.getItem('url'));
 //searchButton.addEventListener('click', search);
 
 if(localStorage.getItem('token')){ //checks if there currently exists a login token
-    console.log(localStorage.getItem('token')); 
+    // console.log(localStorage.getItem('token')); 
     login.style.display = 'none'; //hides the options for logging in
     logout.style.display = 'block'; //displays the options for someone who's already logged in
     pfp.style.display = 'flex'; 
@@ -123,17 +123,121 @@ document.getElementById('menu-icon').addEventListener('click', ()=>{
 });
 
 
+//watchlist functionality
+//
+//
+//
+//
+//
+
+document.getElementById('watchlist-button').addEventListener('click', ()=>{
+    document.getElementById('watchlist-menu').classList.toggle('open');
+    document.getElementById('slide-menu').classList.toggle('open');
+});
+document.getElementById('watchlist-menu-back').addEventListener('click', ()=>{
+    document.getElementById('watchlist-menu').classList.toggle('open');
+});
 
 
+let userWatchlist = []; //array to eventually hold watchlist item IDs
+//populate the array
+async function loadWatchlist() {
+  const token = localStorage.getItem('token');
+  const response = await fetch('http://localhost:3000/get-watchlist', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  const data = await response.json();
+  userWatchlist = data.watchlist.map(movie => movie.id); // Just store the IDs
+  console.log(userWatchlist);
+}
+loadWatchlist();
+
+async function generateTable(array) {
+    let imagesArray = [];
+    let idArray = [];
+    const table = document.createElement('table');
+    table.id = 'watchlist-table';
+    const token = localStorage.getItem('token');
+    let row; 
+
+    const response = await fetch('http://localhost:3000/get-watchlist', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    const data = await response.json();
+    // loop the data array
+    for(let movie of data.watchlist){
+        if(movie.poster_path != null){
+            imagesArray = imagesArray.concat(movie.poster_path);
+            idArray = idArray.concat(movie.id);
+        } else {
+            imagesArray = imagesArray.concat(movie.original_title);
+            idArray = idArray.concat(movie.id);
+        }
+    }
+    console.log(data);
+    console.log(imagesArray);
+    //'https://image.tmdb.org/t/p/w780/'+imagesArray[indexNum]
+    imagesArray.forEach((movie, index) => {
+        if (index % 4 === 0) {
+            //every 4th item, create a new row
+            row = document.createElement('tr');
+            table.appendChild(row);
+        }
+        
+        const cell = document.createElement('td');
+
+        const anchor = document.createElement('a');
+        anchor.href = 'Details';
+        anchor.setAttribute('name', idArray[index]);
+
+        const image = document.createElement('img');
+        image.src = 'https://image.tmdb.org/t/p/w780/'+imagesArray[index];
+        image.alt = imagesArray[index];
+        image.style.height = '100%';
+
+        anchor.appendChild(image);
+        cell.appendChild(anchor);
+        row.appendChild(cell);
+    });
+
+    //append the item
+    document.getElementById('watchlist-menu').appendChild(table);
+    console.log(document.getElementById('watchlist-table'));
+}
+// async function initializeWatchlistTable() {
+//     await loadWatchlist();  // Wait for the watchlist to be fully loaded
+//     // generateTable(userWatchlist);
+// }
+// initializeWatchlistTable();
+
+async function createWatchListeners(){
+    await loadWatchlist();
+    await generateTable();    
+    const watchTable = document.querySelectorAll('#watchlist-table td a');
+    watchTable.forEach(movie => movie.addEventListener("click", function() {
+            console.log(movie.name);
+            localStorage.setItem('currentMovie', movie.name);
+
+    }));
+    watchTable.forEach(movie => movie.addEventListener("auxclick", function() {
+        console.log(movie.name);
+        localStorage.setItem('currentMovie', movie.name);
+
+}));
+}
+createWatchListeners();
 
 
-
-
-
-
-
-
-
+// movie searching and filtering functionality
+//
+//
+//
+//
+//
 
 async function search(){
     let imagesArray = []; //declares new arrays for containing the table cells and images
@@ -222,6 +326,11 @@ userInput.addEventListener("keydown", function (e) {
 resetButton.onclick = () => {
     window.location.reload();
 }
+
+//make the movies clickable
+//
+//
+//
 
 function createListeners(){
     movieTable.forEach(movie => movie.addEventListener("click", function() {
@@ -371,7 +480,7 @@ dropButton.onclick = () => {
                 console.log(data.title);
                 localStorage.setItem('currentMovie', random_id);
                 console.log(localStorage.getItem('currentMovie'));
-                window.location.assign('./movieDetails.php');
+                window.location.assign('./Details');
             }
         })
         

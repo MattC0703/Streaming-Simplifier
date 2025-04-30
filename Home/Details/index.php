@@ -7,12 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Details</title>
     <link rel="stylesheet" type="text/css" href="details.css">
-    <link rel="icon" type="image" href="images/3Slogo"> 
+    <link rel="icon" type="image" href="images/3Slogo.png"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
 </head>
 <body>
     
     <h3 id="site-label">Streaming Simplifier</h3>
     <div id="main-container">
+        <a id="toggle-watchlist-button">Toggle Watchlist</a>
+
         <div id="movie-holder">
             <img src="" width="100%"  id="movie-poster">
         </div>
@@ -26,7 +31,7 @@
             <span style="color:rgb(255, 54, 54);"><\</span>Streaming Services<span style="color:rgb(255, 54, 54);">/></span></h2>
 
         <div id="button-holder">
-            <a href="./index.php"><img src="images/goBack.png" width="100%"></a>
+            <a href="../"><img src="../images/goBack.png" width="100%"></a>
         </div>
 
         <div id="mid-container">

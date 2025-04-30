@@ -1,4 +1,7 @@
 /* Code by Matthew Culley */
+    .hidden{
+        display:none;
+    }
 
 @media(min-width: 768px){
 
@@ -79,6 +82,64 @@
     }
     #slide-menu nav ul li span{
         padding-left:90px;
+    }
+
+    #watchlist-menu{
+        position:fixed;
+        z-index:2;
+        top:100px;
+        min-width:650px;
+        width:60%;
+        height:750px;
+        border: 12px solid rgb(255,54,54);
+        background-color:white;
+        overflow-y:auto;
+        /* right: -70%; */
+        transform:translateX(100%);
+        left:50%;
+        box-shadow: 0 12px 30px 10px rgb(102, 102, 102);
+
+        padding: 30px;
+        user-select:text;
+        transition: transform .4s ease-in; 
+    }
+    #watchlist-menu.open{
+        /* right: auto; */
+        transform:translateX(-50%);
+    }
+    #watchlist-menu table{
+        table-layout:auto;
+        display:flex;
+        flex-direction: column;
+        justify-content:center;
+        border-spacing: 3.5vw 2vw;
+        margin-top: 30px;
+    }
+    #watchlist-menu table tr td{
+        border: 0px solid black;
+        width:22vh;
+        height: fit-content;
+        border-radius: 3px;
+        padding:0;
+        box-shadow:0px 10px 12px lightgray;
+    }
+    #watchlist-menu table tr td a img{
+        display:block;
+    }
+    #watchlist-menu-back{
+        position:fixed;
+        width:35px;
+        margin-left: -15px;
+        margin-top: -15px;
+        user-select:none;
+        cursor:pointer;
+    }
+    #watchlist-menu ul{
+        font-size:4rem;
+    }
+    #watchlist-menu ul li{
+        padding-top:10px;
+        list-style:none;
     }
 
     #account-logo{

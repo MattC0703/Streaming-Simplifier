@@ -18,6 +18,7 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
+app.use(express.json());
 app.use(express.static('public'));
 
 const client = new MongoClient(uri, { //access my streaming simplifier database tree in mongo
@@ -60,7 +61,7 @@ start();
 
 app.post('/register', async (req, res) => {
     try{
-        console.log('button clicked');
+        // console.log('button clicked');
         const {email, username, password} = req.body; //allocates variables to the recieved data
         console.log(req.body);
         console.log(req.body.password);
@@ -120,12 +121,12 @@ function isAuthenticated(req, res, next) { //token authenticator, necessary for 
     // Verify user exists in database
     users.findOne({ username: decoded.username })
       .then(user => {
-        console.log("mongo user "+user);
+        // console.log("mongo user "+user);
         if (user) {
           req.user = user;
           next();
         } else {
-          console.log('no mongo user'+user);
+          // console.log('no mongo user'+user);
           res.status(401).json({ message: 'Invalid token. User not found.' });
         }
       })
@@ -292,17 +293,19 @@ app.get('/profile-picture-url', isAuthenticated, async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-  
+      
+      const watchlist = user.watchlist || []; //default to a blank watchlist if there is no user.watchlist
+
       // Fetch movie details from TMDB
-      const movieDetails = await Promise.all(user.watchlist.map(async (movieId) => {
+      const movieDetails = await Promise.all(watchlist.map(async (movieId) => {
         const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_API_KEY}`);
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         return data;
       }));
       
-      console.log({watchlist: movieDetails});
-      res.json({ watchlist: movieDetails });
+      // console.log({watchlist: movieDetails});
+      res.json({ watchlist: movieDetails});
     } catch (error) {
       console.error('Error fetching watchlist:', error);
       res.status(500).send('Error fetching watchlist');
@@ -310,6 +313,9 @@ app.get('/profile-picture-url', isAuthenticated, async (req, res) => {
   });
 
 //testing functions below
+//
+//
+
 async function run() {
     try {
         //connect client to server

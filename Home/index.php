@@ -17,6 +17,7 @@
             <div id="top-container">
 
                 <a id="menu-icon"><img src="images/burgericon.png"></a>
+
                 <div id="slide-menu">
                     <nav>
                         <ul>
@@ -26,9 +27,25 @@
                     </nav>
                 </div>
 
+                <div id="watchlist-menu">
+                    <a id="watchlist-menu-back"><img src="images/goBack.png"></a>
+                    <!-- <ul>
+                        <li>Option 1</li>
+                        <li>Option 2</li>
+                        <li>Option 3</li>
+                        <li>Option 4</li>
+                        <li>Option 5</li>
+                        <li>Option 6</li>
+                        <li>Option 7</li>
+                        <li>Option 8</li>
+                        <li>Option 9</li>
+                        <li>Option 10</li>
+                    </ul> -->
+                </div>
+
                 <a id="logout">Log Out!</a>
                 
-                <a href="login/login.html" id="account-logo"> <img src="images/login-here.png"> </a>
+                <a href="login" id="account-logo"> <img src="images/login-here.png"> </a>
                 
                 <a id="account-info"> 
                     <!-- <% if(profilePictureURL) { %> -->
@@ -110,7 +127,7 @@
                         for($column = 0; $column < 5; $column++) //generates a table with 4 rows and 5 columns
                         { 
                             // assigns a unique ID to each table cell and contained image for dynamic use later
-                            echo '<td id=cell'.$cellNum.'><a href="movieDetails.php"> <img src="" id="img'.$imgNum.'" alt="" height"100%"></a></td>';
+                            echo '<td id=cell'.$cellNum.'><a href="./Details"> <img src="" id="img'.$imgNum.'" alt="" height"100%"></a></td>';
                             $cellNum++;
                             $imgNum++;
                         }

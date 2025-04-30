@@ -10,7 +10,7 @@
 #site-label{
     position:absolute;
     color:rgba(255, 112, 129, 0.775);
-    top:.5vh;
+    top:9px;
     left:3vw;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
@@ -24,7 +24,9 @@
 
     position: absolute;
     left:9vh;
-    
+}
+#movie-poster{
+    display:block;
 }
 #movie-title{
     position:absolute;
@@ -112,6 +114,31 @@
     border-radius: 3px;
     padding:0;
     box-shadow:0px 10px 12px lightgray;
+}
+
+#toggle-watchlist-button{
+    position:absolute;
+    font-size:1.2rem;
+    margin-top:350px;
+    margin-left:101px;
+    user-select:none;
+    cursor:pointer;
+    background-color: whitesmoke;
+    border-radius:15px;
+    width:200px;
+    height:30px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    /* font-family: "Honk", system-ui; */
+}
+#toggle-watchlist-button:hover{
+    background-color:lightgray;
+}
+#toggle-watchlist-button:active{
+    background-color:rgb(255, 121, 121);
+    color:white;
 }
 
 
