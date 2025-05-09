@@ -331,8 +331,48 @@ resetButton.onclick = () => {
 //
 //
 //
+async function populateMovieHolder() {
+    const table = document.getElementById('movie-holder');
+    let cellNum = 1;
+    let imgNum = 1;
 
-function createListeners(){
+    const isMobile = window.matchMedia("(max-width: 767.9px)").matches;
+    const maxCol = isMobile ? 2 : 5; //set the number of columns based on screen size
+    const maxRow = isMobile ? 10 : 4; //set the number of rows based on screen size
+
+    for (let row = 0; row < maxRow; row++) {
+        const tr = document.createElement('tr'); //create a new row
+
+        for (let col = 0; col < maxCol; col++) { //create 5 columns in each row
+            const td = document.createElement('td');
+            td.id = `cell${cellNum}`; //give each cell a unique ID
+
+            const a = document.createElement('a');
+            a.href = './Details'; //anchor them to the details page
+
+            const img = document.createElement('img');
+            img.src = ''; //placeholder image src
+            img.id = `img${imgNum}`; //give each image a unique ID
+            img.alt = ''; //placeholder alt text
+            img.style.height = '100%';
+
+            a.appendChild(img); //append the image to the anchor tag
+            td.appendChild(a); //append the anchor tag to the cell
+            tr.appendChild(td); //append the cell to the row
+
+            cellNum++; //increment the cell number for the next cell
+            imgNum++; //increment the image number for the next image
+        }
+
+        table.appendChild(tr); //append the row to the table
+    }
+    console.log(table);
+}
+
+async function createListeners(){
+    await populateMovieHolder();
+    const movieTable = document.querySelectorAll('#movie-holder td a img');
+    console.log(movieTable);
     movieTable.forEach(movie => movie.addEventListener("click", function() {
             console.log(movie.name);
             localStorage.setItem('currentMovie', movie.name);

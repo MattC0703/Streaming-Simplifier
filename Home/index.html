@@ -13,7 +13,7 @@
 <body>
     <h3 id="site-label">Streaming Simplifier</h3>
     <div id="main-container">    
-        <div id="logo-box"><img src="images/3Slogo.png" alt="3 S Logo" style="width:35%"> </div>
+        <div id="logo-box"><img src="images/3Slogo.png" alt="3S Logo" id="SLogo" style="width:35%"> </div>
             <div id="top-container">
 
                 <a id="menu-icon"><img src="images/burgericon.png"></a>
@@ -117,24 +117,7 @@
             <div id="lower-container">
 
 
-            <table id="movie-holder">
-            <?php
-            $cellNum = 1;
-            $imgNum = 1;
-                for($row = 0; $row <= 3; $row++)
-                {
-                    echo "<tr>";
-                        for($column = 0; $column < 5; $column++) //generates a table with 4 rows and 5 columns
-                        { 
-                            // assigns a unique ID to each table cell and contained image for dynamic use later
-                            echo '<td id=cell'.$cellNum.'><a href="./Details"> <img src="" id="img'.$imgNum.'" alt="" height"100%"></a></td>';
-                            $cellNum++;
-                            $imgNum++;
-                        }
-                    echo "</tr>";
-                }
-            ?>
-            </table>
+            <table id="movie-holder"></table>
 
 
             <button id="next-page">Next Page</button>
