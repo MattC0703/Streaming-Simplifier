@@ -119,7 +119,7 @@
     }
     #watchlist-menu table tr td{
         border: 0px solid black;
-        width:22vh;
+        width:500px;
         height: fit-content;
         border-radius: 3px;
         padding:0;
@@ -603,7 +603,7 @@
     }
     #watchlist-menu table tr td{
         border: 0px solid black;
-        width:22vh;
+        width:300px;
         height: fit-content;
         border-radius: 3px;
         padding:0;

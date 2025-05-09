@@ -161,6 +161,9 @@ async function generateTable(array) {
     table.id = 'watchlist-table';
     const token = localStorage.getItem('token');
     let row; 
+    const isMobile = window.matchMedia("(max-width: 767.9px)").matches;
+    const maxCol = isMobile ? 2 : 4; //set the number of columns based on screen size
+
 
     const response = await fetch('http://localhost:3000/get-watchlist', {
         headers: {
@@ -182,7 +185,7 @@ async function generateTable(array) {
     console.log(imagesArray);
     //'https://image.tmdb.org/t/p/w780/'+imagesArray[indexNum]
     imagesArray.forEach((movie, index) => {
-        if (index % 4 === 0) {
+        if (index % maxCol === 0) {
             //every 4th item, create a new row
             row = document.createElement('tr');
             table.appendChild(row);
